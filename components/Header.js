@@ -1,37 +1,36 @@
 import Link from 'next/link'
-import { withRouter } from 'next/router'
+import Menu from './Menu'
 
-const Header = ({ router: { pathname } }) => (
+const Header = () => (
   <header>
-    <nav>
-      <Link href="/">
-        <a className="header-logo-link">Node React Blog</a>
-      </Link>
-      <ul>
-        <li>
-          <Link href="/">
-            <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
-          </Link>
-        </li>
-        <li>Categories
-          <ul></ul>
-        </li>
-      </ul>
-    </nav>
+    <div className="maxwidth">
+      <nav>
+        <Link href="/">
+          <a className="header-logo-link">Node React Blog</a>
+        </Link>
+        <Menu />
+      </nav>
+    </div>
     <style jsx>{`
       header {
         margin-bottom: 25px;
+        padding: 0.5rem 1rem;
+        box-shadow: 0 -0.5rem 1.7rem -0.5rem rgba(0,0,0,0.3);
       }
-      a {
-        font-size: 14px;
-        margin-right: 15px;
-        text-decoration: none;
+      header nav {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
       }
-      .is-active {
-        text-decoration: underline;
+      .header-logo-link{
+        font-size: 1.5rem;
+        color: #02e;
+        font-weight: bolder;
       }
     `}</style>
   </header>
 )
 
-export default withRouter(Header)
+export default Header
