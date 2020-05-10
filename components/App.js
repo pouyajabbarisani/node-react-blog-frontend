@@ -96,10 +96,18 @@ export default ({ children }) => (
         width: 100%;
         text-align: left;
       }
+      .input-container .input-on-error{
+        border-color: #a00 !important;
+      }
       .input-container input:focus {
         border-color: #02e !important;
       }
-      
+      .input-container .input-error{
+        color: #a00;
+        font-size: 0.8rem;
+        display: block;
+        width: 100%;
+      }
       ::placeholder {
         color: #bbb;
         opacity: 1;
@@ -110,6 +118,11 @@ export default ({ children }) => (
       ::-ms-input-placeholder { 
        color: #bbb;
       }
+      .disabled-button{
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
     `}</style>
   </main>
 )
+
