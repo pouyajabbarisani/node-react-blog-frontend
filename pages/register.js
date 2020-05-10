@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import App from '../components/App'
 import Header from '../components/Header'
+import Head from 'next/head'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import { useQuery, useMutation } from '@apollo/react-hooks'
