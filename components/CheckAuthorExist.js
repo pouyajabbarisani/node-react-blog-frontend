@@ -26,7 +26,7 @@ export default function CheckAuthorExist() {
 
    return (
       <>
-         {authors && authors.length ? <PostList /> : <p>No author found! it seems weblog in new. for creating first author, go to <Link><a href="/register">this page</a></Link></p>}
+         {authors && authors.length ? <PostList /> : <p>No author found! it seems weblog in new. for creating first author, go to <Link href="/register"><a>this page</a></Link></p>}
       </>
    )
 }

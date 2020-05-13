@@ -40,47 +40,37 @@ const Register = () => {
       }
    )
 
-   const [formFields, setFormField] = useState({});
-
    useEffect(() => {
-      const { authors } = data
-      if (authors.length) {
+      if (data && data.authors && data.authors.length) {
          // check, if initial author (manager) exist, then return to home page
          Router.push(`/`)
       }
    }, [])
 
+   const [formFields, setFormField] = useState({});
+   const [formFieldsErrors, setFormFieldsErrors] = useState({});
    const [isButtonLoading, setIsButtonLoading] = useState(false)
    const [initializeAuthor, { _: mutationLoading, __: mutationError }] = useMutation(INITIALIZE_AUTHOR);
+
    const onInitialRegisterSubmit = async (e) => {
       e.preventDefault();
-      if (haveError) {
-         alert.error('Please complete required Field Currectly and try again!')
+      const { error, validateResult: value } = await createAuthorValidator.validate(formFields, { abortEarly: false });
+      if (error) {
+         alert.error(error.toString());
       }
       else {
-         const { error, validateResult: value } = await createAuthorValidator.validate(formFields, { abortEarly: false });
-         if (error) {
-            alert.error(error.toString());
-         }
-         else {
-            setIsButtonLoading(true);
-            initializeAuthor({ variables: { ...formFields } }).then(({ data }) => {
-               if (data && data.initialManager && data.initialManager.username) {
-                  alert.success('Manager created!')
-                  setTimeout(function () { Router.push(`/login`) }, 1000)
-               }
-               else {
-                  alert.error('Unknown Error!')
-               }
-            }).catch(err => alert.error(err.toString()));
-            setIsButtonLoading(false);
-         }
+         setIsButtonLoading(true);
+         initializeAuthor({ variables: { ...formFields } }).then(({ data }) => {
+            if (data && data.initialManager && data.initialManager.username) {
+               alert.success('Manager created!')
+               setTimeout(function () { Router.push(`/login`) }, 1000)
+            }
+            else {
+               alert.error('Unknown Error!')
+            }
+         }).catch(err => alert.error(err.toString()));
+         setIsButtonLoading(false);
       }
-   }
-
-   const [haveError, setHaveError] = useState(true) // set initial value to true to prevent user from submit form before than touch
-   const haveErrorTrigger = (res) => {
-      setHaveError(!!res)
    }
 
    if (error) return <ErrorMessage message="Error on loading data from server." />
@@ -97,13 +87,21 @@ const Register = () => {
             <div className="narrow-block">
                <h1>Initialize Author Manager</h1>
 
-               <Input type="text" name="fullName" label="Full Name*:" onChange={e => setFormField({ ...formFields, fullName: e.target.value })} placeholder="Pouya Jabbarisani" haveError={haveErrorTrigger} fullWidth={true} required={true} />
+               <Input type="text" name="fullName" label="Full Name*:" onChange={e => setFormField({ ...formFields, fullName: e.target.value })} placeholder="Pouya Jabbarisani" fullWidth={true} required={true} />
 
-               <Input type="username" name="username" label="Username*:" onChange={e => setFormField({ ...formFields, username: e.target.value })} placeholder="pouya" fullWidth={true} haveError={haveErrorTrigger} required={true} />
+               <Input type="username" name="username" label="Username*:" onChange={e => {
+                  setFormField({ ...formFields, username: e.target.value.replace(/[^A-Z0-9]/ig, "") })
+               }} placeholder="pouya" fullWidth={true} required={true} value={formFields.username || ''} />
 
-               <Input type="email" name="email" label="Email*:" onChange={e => setFormField({ ...formFields, email: e.target.value })} placeholder="pouyajabbarisani@gmail.com" fullWidth={true} haveError={haveErrorTrigger} required={true} />
+               <Input type="email" name="email" label="Email*:" onChange={e => setFormField({ ...formFields, email: e.target.value })} placeholder="pouyajabbarisani@gmail.com" fullWidth={true} required={true} />
 
-               <Input type="password" name="password" label="Password*:" onChange={e => setFormField({ ...formFields, password: e.target.value })} placeholder="minimum 6 letters and numbers" fullWidth={true} haveError={haveErrorTrigger} required={true} />
+               <Input type="password" name="password" label="Password*:" onChange={e => {
+                  setFormField({ ...formFields, password: e.target.value })
+                  if (!/^(?=.*[a-z])(?=.*\d).{6,30}$/.test(e.target.value)) {
+                     setFormFieldsErrors({ ...formFieldsErrors, password: 'Password should have letter and number with length from 6 to 30' })
+                  }
+                  else { setFormFieldsErrors({ ...formFieldsErrors, password: '' }) }
+               }} placeholder="minimum 6 letters and numbers" errorMessage={formFieldsErrors.password || ''} fullWidth={true} required={true} />
 
                <Button label="Initialize" isFullWidth={true} isloading={!!isButtonLoading} onClick={e => onInitialRegisterSubmit(e)} />
             </div>

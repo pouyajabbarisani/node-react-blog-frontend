@@ -26,43 +26,34 @@ const SET_AUTH = gql`
 `;
 
 const Login = () => {
-   const alert = useAlert()
 
+   const alert = useAlert()
    const [loginFields, setLoginField] = useState({})
    const [isButtonLoading, setIsButtonLoading] = useState(false)
-   const [haveError, setHaveError] = useState(false)
-
-   const haveErrorTrigger = (res) => {
-      setHaveError(!!res)
-   }
-
    const [login, { _: mutationLoading, __: mutationError }] = useMutation(LOGIN);
    const [testdata] = useMutation(SET_AUTH);
+
    const onLogin = async (e) => {
       e.preventDefault();
-      if (haveError) {
-         alert.error('Please complete required Fields Currectly and try again!')
+      const { error, validateResult: value } = await loginValidator.validate(loginFields, { abortEarly: false });
+      if (error) {
+         alert.error(error.toString());
       }
       else {
-         const { error, validateResult: value } = await loginValidator.validate(loginFields, { abortEarly: false });
-         if (error) {
-            alert.error(error.toString());
-         }
-         else {
-            setIsButtonLoading(true);
-            login({ variables: { ...loginFields } }).then(({ data }) => {
-               if (data && data.login && data.login.username) {
-                  testdata({ variables: { fullName: data.login.fullName, username: data.login.username, isManager: data.login.isManager } }).then(() => {
-                     Router.push(`/panel`)
-                  })
-               }
-               else {
-                  alert.error('Unknown Error!')
-               }
-            }).catch(err => alert.error(err.toString()));
-            setIsButtonLoading(false);
-         }
+         setIsButtonLoading(true);
+         login({ variables: { ...loginFields } }).then(({ data }) => {
+            if (data && data.login && data.login.username) {
+               testdata({ variables: { fullName: data.login.fullName, username: data.login.username, isManager: data.login.isManager } }).then(() => {
+                  Router.push(`/panel`)
+               })
+            }
+            else {
+               alert.error('Unknown Error!')
+            }
+         }).catch(err => alert.error(err.toString()));
+         setIsButtonLoading(false);
       }
+
    }
 
    return (
@@ -79,7 +70,6 @@ const Login = () => {
                   onChange={e => setLoginField({ ...loginFields, email: e.target.value })}
                   placeholder="pouyajabbarisani@gmail.com"
                   fullWidth={true}
-                  haveError={haveErrorTrigger}
                   required={true} />
 
                <Input
@@ -88,7 +78,6 @@ const Login = () => {
                   label="Password*:"
                   onChange={e => setLoginField({ ...loginFields, password: e.target.value })}
                   fullWidth={true}
-                  haveError={haveErrorTrigger}
                   required={true} />
 
                <Button
