@@ -13,6 +13,7 @@
     "apollo-cache-inmemory": "1.6.5",
     "apollo-client": "2.6.8",
     "apollo-link-http": "1.5.16",
+    "apollo-link-state": "^0.4.2",
     "graphql": "^14.0.2",
     "graphql-tag": "2.10.3",
     "isomorphic-unfetch": "^3.0.0",
