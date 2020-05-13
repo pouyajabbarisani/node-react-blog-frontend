@@ -23,25 +23,25 @@ const PanelLayout = (props) => {
                <section className="dashboard-sidebar-container">
                   <div>
                      <h1>Node React Blog Panel</h1>
-                     <Link href="/">
+                     <Link href="/panel">
                         <a className={props.router.pathname === '/panel' ? 'is-active' : ''}>Dashboard</a>
                      </Link>
-                     <Link href="/">
+                     <Link href="/panel/add-post">
                         <a className={props.router.pathname === '/panel/add-post' ? 'is-active' : ''}>Add Post</a>
                      </Link>
-                     <Link href="/">
+                     <Link href="/panel/posts">
                         <a className={props.router.pathname === '/panel/posts' ? 'is-active' : ''}>Posts</a>
                      </Link>
-                     <Link href="/">
+                     <Link href="/panel/add-category">
                         <a className={props.router.pathname === '/panel/add-category' ? 'is-active' : ''}>Add Category</a>
                      </Link>
-                     <Link href="/">
+                     <Link href="/panel/categories">
                         <a className={props.router.pathname === '/panel/categories' ? 'is-active' : ''}>Categories</a>
                      </Link>
-                     <Link href="/">
+                     <Link href="/panel/add-author">
                         <a className={props.router.pathname === '/panel/add-author' ? 'is-active' : ''}>Add Author</a>
                      </Link>
-                     <Link href="/">
+                     <Link href="/panel/authors">
                         <a className={props.router.pathname === '/panel/authors' ? 'is-active' : ''}>Authors</a>
                      </Link>
                   </div>
