@@ -77,6 +77,26 @@ export default ({ children }) => (
         align-content: flex-start;
         margin: 1rem 0;
       }
+      .ck-editor {
+        width: 100% !important;
+        margin: 1rem 0 !important;
+      }
+      .ck-toolbar {
+        border-radius: 0.3rem 0.3rem 0 0 !important;
+      }
+      .ck-content {
+        border-radius: 0 0 0.3rem 0.3rem !important;
+        min-height: 15rem;
+        max-height: 25rem;
+        overflow: scroll;
+      }
+      .fullwidth-input-container{
+        width: 100%;
+      }
+      .fullwidth-input-container input,
+      .fullwidth-input-container select{
+        width: 100%;
+      }
       .input-container label{
         diplay: block;
         font-size: 0.8rem;
@@ -121,6 +141,38 @@ export default ({ children }) => (
       .disabled-button{
         opacity: 0.7;
         cursor: not-allowed;
+      }
+      .nosidemargin-button{
+        margin: 1rem 0 !important;
+      }
+      .panel-centered-content{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        width: 40rem;
+        max-width: 90%;
+        margin: auto;
+      }
+      @media screen and (max-width: 767px){
+        .panel-centered-content{
+          width: 90% !important;
+        }
+      }
+      .float-to-right{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: baseline;
+        align-content: flex-start;
+      }
+      .panel-page-title{
+        font-size: 2rem;
+        text-align: left !important;
+        background: -webkit-linear-gradient(45deg, #000, #02e,  #02e);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     `}</style>
   </main>

@@ -48,9 +48,10 @@ const Button = (props) => {
       let listString = ''
       props.isloading && (listString += ' disabled-button ');
       props.isFullWidth && (listString += ' fullwidth-button ');
+      props.noSideMargin && (listString += ' nosidemargin-button ');
       return listString
    }
 
-   return <button onClick={e => !(!!props.isloading) && props.onClick(e)} className={classLists()}> {props.isloading ? loadingLoader() : props.label}</button >
+   return <button onClick={e => !(!!props.isloading) && props.onClick(e)} className={classLists()}> {props.isloading ? loadingLoader() : (props.label || 'Submit')}</button >
 }
 export default Button

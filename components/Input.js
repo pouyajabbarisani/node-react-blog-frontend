@@ -35,7 +35,7 @@ const Input = (props) => {
    }
 
    return (
-      <div className="input-container">
+      <div className={props.fullWidth ? 'input-container fullwidth-input-container' : 'input-container'}>
          {labelHandler()}
          <input name={props.type || ''} type={props.type || 'text'} placeholder={props.placeholder || ''} onChange={e => onChangeCustomiser(e)} onBlur={e => onBlurCustomizer(e)} {...dynamicProps} className={errorMessage && errorMessage != '' ? 'input-on-error' : ''} />
 
