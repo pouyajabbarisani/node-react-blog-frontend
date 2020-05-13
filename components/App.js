@@ -40,7 +40,8 @@ export default ({ children }) => (
         margin: 0 auto;
         max-width: 650px;
       }
-      button {
+      button ,
+      .button {
         text-align: center;
         background: #02e;
         background: linear-gradient(229deg, rgba(17,51,255,1) 0%, rgba(0,26,185,1) 100%);
@@ -60,7 +61,14 @@ export default ({ children }) => (
         cursor: pointer;
         transition: box-shadow 0.3s;
       }
-      button:hover {
+      .red-button{
+        background: linear-gradient(229deg, rgba(255,17,96,1) 0%, rgba(162,0,51,1) 100%) !important;
+      }
+      a.button:hover{
+        color: #fff !important;
+      }
+      button:hover,
+      .button:hover {
         box-shadow: 0 0.2rem 1rem -0.3rem rgba(0,0,0,0.4);
       }
       .fullwidth-button{
@@ -154,6 +162,15 @@ export default ({ children }) => (
         max-width: 90%;
         margin: auto;
       }
+      .panel-list-container{
+        width: calc(100% - 4rem);
+        margin: 0 auto 2rem;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        background: #fff;
+      }
       @media screen and (max-width: 767px){
         .panel-centered-content{
           width: 90% !important;
@@ -173,6 +190,15 @@ export default ({ children }) => (
         background: -webkit-linear-gradient(45deg, #000, #02e,  #02e);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+      }
+      .inline-page-headline{
+        display: inline-block !important;
+      }
+      .large-text{
+        font-size: 110% !important;
+      }
+      .light-text{
+        color: #777 !important;
       }
     `}</style>
   </main>

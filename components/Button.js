@@ -46,6 +46,7 @@ const Button = (props) => {
 
    const classLists = () => {
       let listString = ''
+      props.className && (listString += ` ${props.className} `)
       props.isloading && (listString += ' disabled-button ');
       props.isFullWidth && (listString += ' fullwidth-button ');
       props.noSideMargin && (listString += ' nosidemargin-button ');
