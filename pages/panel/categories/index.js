@@ -1,9 +1,13 @@
-import { withApollo } from "../../lib/apollo";
-import AuthPanelLayout from "../../components/AuthPanelLayout";
+import { useEffect } from 'react'
+import { withApollo } from "../../../lib/apollo"
+import AuthPanelLayout from "../../../components/AuthPanelLayout"
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import Link from 'next/link'
-import Button from '../../components/Button'
+import Button from '../../../components/Button'
+import { useAlert } from 'react-alert'
+import { useRouter } from 'next/router'
+
 
 const CATEGORIES_LIST_QUERY = gql`
    {
@@ -16,10 +20,45 @@ const CATEGORIES_LIST_QUERY = gql`
       }
    }
 `
+const DELETE_CATEGORY = gql`
+   mutation DeleteCategory($slug: String!) {
+      deleteCategory (slug: $slug){
+         status
+      }
+   }
+`
 
 const Categories = () => {
 
+   const alert = useAlert()
+   const router = useRouter()
+
    const { loading, error, data } = useQuery(CATEGORIES_LIST_QUERY, { notifyOnNetworkStatusChange: true })
+   const [deleteCategory] = useMutation(DELETE_CATEGORY);
+
+   const onDeleteCategory = (slug) => {
+      deleteCategory({
+         variables: { slug }, refetchQueries: [{
+            query: gql`
+            {
+               categories {
+                  title
+                  slug
+                  posts{
+                     title
+                  }
+               }
+            }
+         `}],
+      }).then(({ data }) => {
+         (data && data.deleteCategory && data.deleteCategory.status) ? alert.success('Category deleted!') : alert.error('Error in deleting the category!')
+      }).catch(err => alert.error(err.toString()));
+   }
+
+   useEffect(() => {
+      (router.query && router.query.create && router.query.create == "success") && alert.success('Category created!');
+      (router.query && router.query.update && router.query.update == "success") && alert.success('Category updated!');
+   }, [])
 
    return (
       <AuthPanelLayout pageTitle="Categories">
@@ -35,10 +74,10 @@ const Categories = () => {
                   Posts in this category: {singleCategory.posts ? singleCategory.posts.length : '0'}
                </div>
                <div>
-                  <Link href="">
+                  <Link href={`/panel/categories/${singleCategory.slug}`}>
                      <a className="button">Edit</a>
                   </Link>
-                  <Button label="Delete" className="button red-button" />
+                  <Button label="Delete" className="button red-button" onClick={() => onDeleteCategory(singleCategory.slug)} />
                </div>
             </div>) : 'Categories list is empty!')}
 

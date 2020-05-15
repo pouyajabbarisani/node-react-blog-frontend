@@ -46,7 +46,20 @@ const AddCategory = () => {
          }
          else {
             setIsButtonLoading(true);
-            createCategory({ variables: { ...formFields } }).then(({ data }) => {
+            createCategory({
+               variables: { ...formFields }, refetchQueries: [{
+                  query: gql`
+               {
+                  categories {
+                     title
+                     slug
+                     posts{
+                        title
+                     }
+                  }
+               }
+            `}],
+            }).then(({ data }) => {
                if (data && data.createCategory && data.createCategory.title) {
                   Router.push('/panel/categories?create=success')
                }
