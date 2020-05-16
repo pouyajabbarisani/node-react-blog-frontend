@@ -105,7 +105,8 @@ export default ({ children }) => (
       .fullwidth-input-container select{
         width: 100%;
       }
-      .input-container label{
+      .input-container label,
+      .input-label{
         diplay: block;
         font-size: 0.8rem;
         width: 100%;
@@ -160,7 +161,7 @@ export default ({ children }) => (
         justify-content: flex-start;
         width: 40rem;
         max-width: 90%;
-        margin: auto;
+        margin: auto auto 3rem auto;
       }
       .panel-list-container{
         width: calc(100% - 4rem);

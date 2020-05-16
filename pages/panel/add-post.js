@@ -3,8 +3,12 @@ import AuthPanelLayout from '../../components/AuthPanelLayout'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
 import slugify from 'slugify'
+import gql from 'graphql-tag'
 import useCKEditor from '../../custom-hooks/use-ckeditor';
 import { XmlEntities as Entities } from 'html-entities';
+import { withApollo } from '../../lib/apollo'
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import SelectCategory from '../../components/SelectCategory';
 const entities = new Entities();
 
 
@@ -60,6 +64,12 @@ const AddPost = () => {
                onBlur={(event, editor) => { setFormFields({ ...formFields, content: entities.encode(editor.getData()) }) }}
             /> : ''}
 
+            <SelectCategory
+               label="Categories:"
+               setFormFields={setFormFields}
+               formFields={formFields}
+               fullWidth={true} />
+
             <div className="float-to-right">
                <Button
                   label="Publish New Post"
@@ -70,8 +80,8 @@ const AddPost = () => {
             </div>
 
          </section>
-      </AuthPanelLayout>
+      </AuthPanelLayout >
    )
 }
 
-export default AddPost;
+export default withApollo({ ssr: true })(AddPost);
