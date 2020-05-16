@@ -147,6 +147,30 @@ export default ({ children }) => (
       ::-ms-input-placeholder { 
        color: #bbb;
       }
+      .dropzone-container{
+        margin: 1rem 0;
+      }
+      .dropzone-container>div{
+        margin: 0.2rem 0 !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: rgb(241, 241, 241);
+        border-radius: 0.3rem;
+        padding: 1rem;
+        border: 1px dashed rgb(187, 187, 187);
+        cursor: pointer;
+      }
+      .dropzone-container>div p{
+        color: #656565 !important;
+      }
+      .dropzone-container>div:hover{
+        border: 1px solid rgb(187, 187, 187) !important;
+        background: rgb(245,245,245) !important;
+      }
+      .select-category-container{
+        margin: 1rem 0;
+      }
       .disabled-button{
         opacity: 0.7;
         cursor: not-allowed;

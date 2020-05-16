@@ -35,7 +35,7 @@ const SelectCategory = props => {
    }
 
    return (
-      <div className={props.fullWidth ? ' fullwidth-input-container' : ''}>
+      <div className={props.fullWidth ? 'select-category-container fullwidth-input-container' : 'select-category-container'}>
          {labelHandler()}
          {!getCategoriesLoading && categories && <Select
             options={categories || []}
