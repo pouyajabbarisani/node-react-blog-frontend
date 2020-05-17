@@ -50,7 +50,7 @@ const Register = () => {
    const [formFields, setFormField] = useState({});
    const [formFieldsErrors, setFormFieldsErrors] = useState({});
    const [isButtonLoading, setIsButtonLoading] = useState(false)
-   const [initializeAuthor, { _: mutationLoading, __: mutationError }] = useMutation(INITIALIZE_AUTHOR);
+   const [initializeAuthor] = useMutation(INITIALIZE_AUTHOR);
 
    const onInitialRegisterSubmit = async (e) => {
       e.preventDefault();
