@@ -10,6 +10,7 @@ export default ({ children }) => (
         margin: 0;
         padding: 0;
         box-sizing: border-box;
+        overflow-x: hidden;
       }
       a {
         text-decoration: none;
@@ -149,6 +150,7 @@ export default ({ children }) => (
       }
       .dropzone-container{
         margin: 1rem 0;
+        outline: none !important;
       }
       .dropzone-container>div{
         margin: 0.2rem 0 !important;
@@ -160,6 +162,7 @@ export default ({ children }) => (
         padding: 1rem;
         border: 1px dashed rgb(187, 187, 187);
         cursor: pointer;
+        outline: none !important;
       }
       .dropzone-container>div p{
         color: #656565 !important;
@@ -167,6 +170,12 @@ export default ({ children }) => (
       .dropzone-container>div:hover{
         border: 1px solid rgb(187, 187, 187) !important;
         background: rgb(245,245,245) !important;
+      }
+      .dropzone-container aside img{
+        width: 16rem;
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.3rem;
       }
       .select-category-container{
         margin: 1rem 0;

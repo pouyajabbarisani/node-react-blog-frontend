@@ -9,6 +9,7 @@ import { XmlEntities as Entities } from 'html-entities';
 import { withApollo } from '../../lib/apollo'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import SelectCategory from '../../components/SelectCategory';
+import DragDropUplaoder from '../../components/DragDropUploader'
 const entities = new Entities();
 
 
@@ -69,6 +70,9 @@ const AddPost = () => {
                setFormFields={setFormFields}
                formFields={formFields}
                fullWidth={true} />
+
+            <DragDropUplaoder
+               onUpload={(value) => setFormFields({ ...formFields, featuredImage: value })} />
 
             <div className="float-to-right">
                <Button

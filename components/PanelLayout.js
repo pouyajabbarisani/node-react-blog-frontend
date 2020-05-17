@@ -16,57 +16,54 @@ const PanelLayout = (props) => {
       <App>
          <Head>
             <title>{props.pageTitle || 'Dashboard'}</title>
-            <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
          </Head>
-         <div className="dashboard-overflow-container">
-            <div className={(sideMenuStatus == 'open') ? "open-responsive-side-menu dashboard-container" : "dashboard-container"} >
-               <section className="dashboard-sidebar-container">
-                  <div>
-                     <h1>Node React Blog Panel</h1>
-                     <Link href="/panel">
-                        <a className={props.router.pathname === '/panel' ? 'is-active' : ''}>Dashboard</a>
-                     </Link>
-                     <Link href="/panel/add-post">
-                        <a className={props.router.pathname === '/panel/add-post' ? 'is-active' : ''}>Add Post</a>
-                     </Link>
-                     <Link href="/panel/posts">
-                        <a className={props.router.pathname === '/panel/posts' ? 'is-active' : ''}>Posts</a>
-                     </Link>
-                     <Link href="/panel/add-category">
-                        <a className={props.router.pathname === '/panel/add-category' ? 'is-active' : ''}>Add Category</a>
-                     </Link>
-                     <Link href="/panel/categories">
-                        <a className={props.router.pathname === '/panel/categories' ? 'is-active' : ''}>Categories</a>
-                     </Link>
-                     <Link href="/panel/add-author">
-                        <a className={props.router.pathname === '/panel/add-author' ? 'is-active' : ''}>Add Author</a>
-                     </Link>
-                     <Link href="/panel/authors">
-                        <a className={props.router.pathname === '/panel/authors' ? 'is-active' : ''}>Authors</a>
-                     </Link>
-                  </div>
-               </section>
-               <section className="dashboard-content-container" onClick={() => {
-                  if (sideMenuStatus == 'open') {
-                     setSideMenuStatus('close')
-                  }
-               }}>
-                  <div>
-                     <span className="dashboard-responisve-trigger-button" onClick={() => {
-                        (sideMenuStatus == 'open') ? setSideMenuStatus('close') : setSideMenuStatus('open');
-                     }}>☰</span>
+         {/* <div className="dashboard-overflow-container"> */}
+         <div className={(sideMenuStatus == 'open') ? "open-responsive-side-menu dashboard-container" : "dashboard-container"} >
+            <section className="dashboard-sidebar-container">
+               <div>
+                  <h1>Node React Blog Panel</h1>
+                  <Link href="/panel">
+                     <a className={props.router.pathname === '/panel' ? 'is-active' : ''}>Dashboard</a>
+                  </Link>
+                  <Link href="/panel/add-post">
+                     <a className={props.router.pathname === '/panel/add-post' ? 'is-active' : ''}>Add Post</a>
+                  </Link>
+                  <Link href="/panel/posts">
+                     <a className={props.router.pathname === '/panel/posts' ? 'is-active' : ''}>Posts</a>
+                  </Link>
+                  <Link href="/panel/add-category">
+                     <a className={props.router.pathname === '/panel/add-category' ? 'is-active' : ''}>Add Category</a>
+                  </Link>
+                  <Link href="/panel/categories">
+                     <a className={props.router.pathname === '/panel/categories' ? 'is-active' : ''}>Categories</a>
+                  </Link>
+                  <Link href="/panel/add-author">
+                     <a className={props.router.pathname === '/panel/add-author' ? 'is-active' : ''}>Add Author</a>
+                  </Link>
+                  <Link href="/panel/authors">
+                     <a className={props.router.pathname === '/panel/authors' ? 'is-active' : ''}>Authors</a>
+                  </Link>
+               </div>
+            </section>
+            <section className="dashboard-content-container" onClick={() => {
+               if (sideMenuStatus == 'open') {
+                  setSideMenuStatus('close')
+               }
+            }}>
+               <div>
+                  <span className="dashboard-responisve-trigger-button" onClick={() => {
+                     (sideMenuStatus == 'open') ? setSideMenuStatus('close') : setSideMenuStatus('open');
+                  }}>☰</span>
 
-                  </div>
-                  <div>{props.children || ''}</div>
-               </section>
-            </div>
+               </div>
+               <div>{props.children || ''}</div>
+            </section>
          </div>
+         {/* </div> */}
 
          <style jsx>{`
-               .dashboard-overflow-container{
-                  width: 100%;
-                  overflow: hidden
-               }
+
                .dashboard-container{
                   display: flex;
                   flex-direction: row;
@@ -101,6 +98,9 @@ const PanelLayout = (props) => {
                   width: 12rem;
                   display: block;
                   height: 100vh;
+                  position: -webkit-sticky;
+                  position: sticky;
+                  top: 0;
                }
                .dashboard-sidebar-container h1{
                   padding: 0.5rem;
@@ -137,6 +137,11 @@ const PanelLayout = (props) => {
                }
                .dashboard-content-container{
                   flex-grow: 1;
+               }
+               @media screen and (max-width: 768px){
+                  .dashboard-content-container{
+                     max-width: calc(100% - 12rem) !important;
+                  }
                }
             
 
