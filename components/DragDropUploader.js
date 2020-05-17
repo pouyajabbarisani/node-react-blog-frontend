@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
@@ -23,7 +23,7 @@ const DragDropUploader = (props) => {
    const onDrop = useCallback((acceptedFiles) => {
       uploadFile({ variables: { photo: acceptedFiles[0] } }).then(({ data }) => {
          if (data.uploadPhoto && data.uploadPhoto.status) {
-            props.onUpload && props.onUpload(data.uploadPhoto.url);
+            data.uploadPhoto && data.uploadPhoto.status && data.uploadPhoto.url && props.onUpload && props.onUpload(data.uploadPhoto.url);
             data.uploadPhoto && data.uploadPhoto.url && setFile(config.serverURL + data.uploadPhoto.url);
          }
          else {
@@ -32,7 +32,8 @@ const DragDropUploader = (props) => {
       }).catch(err => {
          alert.error(err.toString())
       });
-   }, [uploadFile])
+   }, [uploadFile, props])
+
    const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: 'image/jpeg, image/png', maxSize: 2097152, onDrop })
 
    return (
@@ -53,7 +54,8 @@ const DragDropUploader = (props) => {
                      <img
                         src={file}
                      />
-                     <span onClick={() => {
+                     <span onClick={(e) => {
+                        e.stopPropagation();
                         props.onUpload && props.onUpload(null);
                         setFile(null);
                      }}>Delete</span>

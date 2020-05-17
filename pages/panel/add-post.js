@@ -44,22 +44,23 @@ const AddPost = () => {
 
    const onSavePost = async (e) => {
       e.preventDefault();
-      const { error, validateResult: value } = await createPostValidator.validate(formFields, { abortEarly: false });
-      if (error) {
-         alert.error(error.toString());
-      }
-      else {
-         setIsButtonLoading(true);
-         createPost({ variables: { ...formFields } }).then(({ data }) => {
-            if (data && data.createPost && data.createPost.slug) {
-               setTimeout(function () { Router.push(`/panel/posts?create=success`) }, 1000)
-            }
-            else {
-               alert.error('Unknown Error!')
-            }
-         }).catch(err => alert.error(err.toString()));
-         setIsButtonLoading(false);
-      }
+      console.log(formFields)
+      // const { error, validateResult: value } = await createPostValidator.validate(formFields, { abortEarly: false });
+      // if (error) {
+      //    alert.error(error.toString());
+      // }
+      // else {
+      //    setIsButtonLoading(true);
+      //    createPost({ variables: { ...formFields } }).then(({ data }) => {
+      //       if (data && data.createPost && data.createPost.slug) {
+      //          setTimeout(function () { Router.push(`/panel/posts?create=success`) }, 1000)
+      //       }
+      //       else {
+      //          alert.error('Unknown Error!')
+      //       }
+      //    }).catch(err => alert.error(err.toString()));
+      //    setIsButtonLoading(false);
+      // }
    }
 
    return (
@@ -125,7 +126,7 @@ const AddPost = () => {
                fullWidth={true} />
 
             <DragDropUplaoder
-               onUpload={(value) => setFormFields({ ...formFields, featuredImage: value })} />
+               onUpload={value => { setFormFields({ ...formFields, featuredImage: value }) }} />
 
             <div className="float-to-right">
                <Button
