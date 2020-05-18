@@ -39,28 +39,53 @@ const AddPost = () => {
    const { isEditorLoaded, CKEditor, ClassicEditor } = useCKEditor();
    const [isButtonLoading, setIsButtonLoading] = useState(false)
    const [uploadFile, { loading }] = useMutation(UPLOAD_PHOTO);
-   const [formFields, setFormFields] = useState({});
+   const [formFields, setFormFields] = useState({ categories: [] });
    const [createPost] = useMutation(CREATE_POST);
 
    const onSavePost = async (e) => {
       e.preventDefault();
-      console.log(formFields)
-      // const { error, validateResult: value } = await createPostValidator.validate(formFields, { abortEarly: false });
-      // if (error) {
-      //    alert.error(error.toString());
-      // }
-      // else {
-      //    setIsButtonLoading(true);
-      //    createPost({ variables: { ...formFields } }).then(({ data }) => {
-      //       if (data && data.createPost && data.createPost.slug) {
-      //          setTimeout(function () { Router.push(`/panel/posts?create=success`) }, 1000)
-      //       }
-      //       else {
-      //          alert.error('Unknown Error!')
-      //       }
-      //    }).catch(err => alert.error(err.toString()));
-      //    setIsButtonLoading(false);
-      // }
+      const { error, validateResult: value } = await createPostValidator.validate(formFields, { abortEarly: false });
+      if (error) {
+         alert.error(error.toString());
+      }
+      else {
+         setIsButtonLoading(true);
+         createPost({
+            variables: { ...formFields }, refetchQueries: [{
+               query: gql`
+                  {
+                     posts (limit: 10, page: 1){
+                        status
+                        total
+                        page
+                        list{
+                           title
+                           slug
+                           author{ 
+                              fullName 
+                              username
+                           }
+                           categoriesList {
+                              title
+                              slug
+                           }
+                           content
+                           featuredImage
+                           created_at
+                        }
+                     }
+                  }
+            `}],
+         }).then(({ data }) => {
+            if (data && data.createPost && data.createPost.slug) {
+               setTimeout(function () { Router.push(`/panel/posts?create=success`) }, 1000)
+            }
+            else {
+               alert.error('Unknown Error!')
+            }
+         }).catch(err => alert.error(err.toString()));
+         setIsButtonLoading(false);
+      }
    }
 
    return (
