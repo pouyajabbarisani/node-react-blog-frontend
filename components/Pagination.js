@@ -87,7 +87,6 @@ const Pagination = (props) => {
    return (
       <div>
          {PaginationLoader()}
-         salam
       </div>
    )
 

@@ -8,68 +8,33 @@ import Pagination from '../../../components/Pagination'
 import Button from '../../../components/Button'
 import { useAlert } from 'react-alert'
 import { useRouter } from 'next/router'
+import POSTS_LIST_QUERY from '../../../queries/posts-list'
 
-
-const POSTS_LIST_QUERY = gql`
-   query Posts($limit: Int, $page: Int){
-      posts (limit: $limit, page: $page){
+const DELETE_POST = gql`
+   mutation DeletePost($slug: String!) {
+      deletePost (slug: $slug){
          status
-         total
-         page
-         list{
-            title
-            slug
-            author{ 
-               fullName 
-               username
-            }
-            categoriesList {
-               title
-               slug
-            }
-            content
-            featuredImage
-            created_at
-         }
       }
    }
 `
-// const DELETE_CATEGORY = gql`
-//    mutation DeleteCategory($slug: String!) {
-//       deleteCategory (slug: $slug){
-//          status
-//       }
-//    }
-// `
 
 const Posts = () => {
 
    const alert = useAlert()
    const router = useRouter()
    const [getPosts, { called, loading, data, error }] = useLazyQuery(POSTS_LIST_QUERY,
-      { notifyOnNetworkStatusChange: true }
+      { notifyOnNetworkStatusChange: true, variables: { limit: 10, page: 1 } }
    );
 
-   // const { loading, error, data } = useQuery(POSTS_LIST_QUERY, { notifyOnNetworkStatusChange: true })
-   // const [deleteCategory] = useMutation(DELETE_CATEGORY);
-   // const onDeleteCategory = (slug) => {
-   //    deleteCategory({
-   //       variables: { slug }, refetchQueries: [{
-   //          query: gql`
-   //          {
-   //             categories {
-   //                title
-   //                slug
-   //                posts{
-   //                   title
-   //                }
-   //             }
-   //          }
-   //       `}],
-   //    }).then(({ data }) => {
-   //       (data && data.deleteCategory && data.deleteCategory.status) ? alert.success('Category deleted!') : alert.error('Error in deleting the category!')
-   //    }).catch(err => alert.error(err.toString()));
-   // }
+   // const { loading, error, data: deleteData } = useQuery(POSTS_LIST_QUERY, { notifyOnNetworkStatusChange: true })
+   const [deletePost] = useMutation(DELETE_POST);
+   const onDeletePost = (slug) => {
+      deletePost({
+         variables: { slug }, refetchQueries: [{ query: POSTS_LIST_QUERY, variables: { limit: 10, page: 1 } }],
+      }).then(({ data }) => {
+         (data && data.deletePost && data.deletePost.status) ? alert.success('Post deleted!') : alert.error('Error in deleting the category!')
+      }).catch(err => alert.error(err.toString()));
+   }
 
    useEffect(() => {
       getPosts({ variables: { page: 1 } });
@@ -90,7 +55,7 @@ const Posts = () => {
             {loading && <p>Loading...</p>}
             {error && <p>error!</p>}
             {data && <div><h2 className="inline-page-headline panel-page-title">Posts</h2></div>}
-            {!loading && data && ((data.posts && data.posts.status && data.posts.list && data.posts.list.length) ? data.posts.list.map((singlePost, index) => <div className="single-post-row" key={index}>
+            {!loading && data && ((data.posts && data.posts.status && data.posts.list && data.posts.list.length) ? data.posts.list.map((singlePost, index) => <div className="single-post-row" key={singlePost.slug}>
                <div>
                   <span className="large-text">{singlePost.title}</span>
                </div>
@@ -98,7 +63,7 @@ const Posts = () => {
                   <span>Author: <Link href={'/panel/authors/' + singlePost.author.username}><a>{singlePost.author.fullName}</a></Link></span>
                </div>
                <div>
-                  Categories: {(singlePost.categoriesList && singlePost.categoriesList.length) ? singlePost.categoriesList.map((singleCat, index) => <><span key={singleCat.slug}>{singleCat.title}</span>, </>) : '-'}
+                  Categories: {(singlePost.categoriesList && singlePost.categoriesList.length) ? singlePost.categoriesList.map((singleCat, index) => <span key={singleCat.slug} > <span>{singleCat.title}</span>, </span>) : '-'}
                </div>
                <div>
                   Create at: {dateLoader(singlePost.created_at)}
@@ -107,11 +72,10 @@ const Posts = () => {
                   <Link href={`/panel/posts/${singlePost.slug}`}>
                      <a className="button">Edit</a>
                   </Link>
-                  {/* <Button label="Delete" className="button red-button" onClick={() => onDeleteCategory(singlePost.slug)} /> */}
+                  <Button label="Delete" className="button red-button" onClick={() => onDeletePost(singlePost.slug)} />
                </div>
             </div>) : 'Posts list is empty!')}
-
-            {!loading && data && <Pagination getNewPage={(page) => getPostsTrigger(page)} currentPage={(data.posts && data.posts.page) || 1} resultCount={(data.posts && data.posts.total) || 10} />}
+            {!loading && data && <Pagination getNewPage={(page) => getPostsTrigger(page)} currentPage={(data.posts && data.posts.page) || 1} resultPerPage={10} resultCount={(data.posts && data.posts.total) || 10} />}
 
             <style jsx>{`
             .single-post-row{
@@ -149,7 +113,7 @@ const Posts = () => {
 
          `}</style>
          </section>
-      </AuthPanelLayout>
+      </AuthPanelLayout >
    )
 }
 

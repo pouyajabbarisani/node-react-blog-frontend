@@ -7,13 +7,14 @@ import gql from 'graphql-tag'
 import useCKEditor from '../../custom-hooks/use-ckeditor';
 import { XmlEntities as Entities } from 'html-entities';
 import { withApollo } from '../../lib/apollo'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks'
 import { useAlert } from 'react-alert'
 import SelectCategory from '../../components/SelectCategory';
 import { createPostValidator } from '../../validators/create-post'
 import DragDropUplaoder from '../../components/DragDropUploader'
 import config from '../../config'
 import Router from 'next/router'
+import POSTS_LIST_QUERY from '../../queries/posts-list'
 const entities = new Entities();
 
 
@@ -33,6 +34,14 @@ const UPLOAD_PHOTO = gql`
    }
 `
 
+const CHECK_POST_SLUG = gql`
+   query Post($slug: String!) {
+      post (slug: $slug){
+         title
+      }
+   }
+`
+
 const AddPost = () => {
 
    const alert = useAlert()
@@ -40,52 +49,33 @@ const AddPost = () => {
    const [isButtonLoading, setIsButtonLoading] = useState(false)
    const [uploadFile, { loading }] = useMutation(UPLOAD_PHOTO);
    const [formFields, setFormFields] = useState({ categories: [] });
+   const [checkSlug, { called: checkSlugCalled, loading: checkSlugLoading, data: checkSlugData }] = useLazyQuery(CHECK_POST_SLUG);
    const [createPost] = useMutation(CREATE_POST);
 
    const onSavePost = async (e) => {
       e.preventDefault();
-      const { error, validateResult: value } = await createPostValidator.validate(formFields, { abortEarly: false });
-      if (error) {
-         alert.error(error.toString());
+      if (checkSlugCalled && !checkSlugLoading && (checkSlugData && checkSlugData.post)) {
+         alert.error('A post with entered slug is exist, please enter another slug');
       }
       else {
-         setIsButtonLoading(true);
-         createPost({
-            variables: { ...formFields }, refetchQueries: [{
-               query: gql`
-                  {
-                     posts (limit: 10, page: 1){
-                        status
-                        total
-                        page
-                        list{
-                           title
-                           slug
-                           author{ 
-                              fullName 
-                              username
-                           }
-                           
-                           categoriesList {
-                              title
-                              slug
-                           }
-                           content
-                           featuredImage
-                           created_at
-                        }
-                     }
-                  }
-            `}],
-         }).then(({ data }) => {
-            if (data && data.createPost && data.createPost.slug) {
-               setTimeout(function () { Router.push(`/panel/posts?create=success`) }, 1000)
-            }
-            else {
-               alert.error('Unknown Error!')
-            }
-         }).catch(err => alert.error(err.toString()));
-         setIsButtonLoading(false);
+         const { error, validateResult: value } = await createPostValidator.validate(formFields, { abortEarly: false });
+         if (error) {
+            alert.error(error.toString());
+         }
+         else {
+            setIsButtonLoading(true);
+            createPost({
+               variables: { ...formFields }, refetchQueries: [{ query: POSTS_LIST_QUERY, variables: { limit: 10, page: 1 } }],
+            }).then(({ data }) => {
+               if (data && data.createPost && data.createPost.slug) {
+                  setTimeout(function () { Router.push(`/panel/posts?create=success`) }, 1000)
+               }
+               else {
+                  alert.error('Unknown Error!')
+               }
+            }).catch(err => alert.error(err.toString()));
+            setIsButtonLoading(false);
+         }
       }
    }
 
@@ -106,8 +96,16 @@ const AddPost = () => {
                type="text"
                name="slug"
                label="Slug (to show in the url)*:"
-               onChange={e => { setFormFields({ ...formFields, slug: slugify(e.target.value.toString()) }) }}
+               onChange={e => {
+                  setFormFields({ ...formFields, slug: slugify(e.target.value.toString()) })
+                  checkSlug({ variables: { slug: slugify(e.target.value.toString()) } })
+               }}
+               onBlur={(e) => {
+                  checkSlug({ variables: { slug: slugify(e.target.value.toString()) } })
+               }}
+               errorMessage={(!checkSlugLoading && checkSlugData && checkSlugData.post && checkSlugData.post.title) ? 'A Post with entered slug exist, please enter a different slug.' : ''}
                placeholder="Use - for space"
+               value={formFields.slug || ''}
                fullWidth={true}
                required={true} />
 

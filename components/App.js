@@ -234,6 +234,29 @@ export default ({ children }) => (
       .light-text{
         color: #777 !important;
       }
+      .pagination-container{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+      }
+      .pagination-container button{
+        background: #eee;
+        color: #333;
+        font-size: 0.9rem !important; 
+        margin: 0.5rem 0.3rem !important;
+        transition: color 0.2s background 0.2s;
+      }
+      .pagination-container .pagination-btn-active{
+        background: #02e !important;
+        color: #fff !important;
+      }
+      .pagination-container button:hover{
+        background: #02e !important;
+        color: #fff !important;
+      }
     `}</style>
   </main>
 )
