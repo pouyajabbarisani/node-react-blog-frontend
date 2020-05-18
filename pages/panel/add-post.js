@@ -65,6 +65,7 @@ const AddPost = () => {
                               fullName 
                               username
                            }
+                           
                            categoriesList {
                               title
                               slug
