@@ -257,6 +257,87 @@ export default ({ children }) => (
         background: #02e !important;
         color: #fff !important;
       }
+      .mainsite-maxwidth{
+        width: 50rem;
+        max-width: 90%;
+        margin: auto
+      }
+      .single-post-block{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: flex-start;     
+        background: #fff; 
+        padding: 0.5rem 1rem;
+        box-shadow: 0 0.2rem 1.3rem -0.3rem rgba(0,0,0,0.15);
+        margin-bottom: 1.5rem;
+        border-radius: 0.5rem;
+      }
+      .single-post-block-image{
+        width: 30%;
+        height: 11rem;
+        max-width: 100%;
+        margin: 0.5rem 0;
+        margin-right: 1rem !important;
+        overflow: hidden;
+        border-radius: 0.5rem;
+      }
+      .single-post-block-image img{ 
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        transition: opacity 0.2s;
+      }
+      .single-post-block-image img:hover{
+        opacity: 0.95 !important; 
+      }
+      .single-post-block-content{
+        width: 70%;
+        max-width: 100%;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: flex-start;
+      
+      }
+      .single-post-block-content p{
+        color: #555 !important;
+        margin-top: 0.7rem !important;
+      }
+      .single-post-block-content h2{
+        margin-bottom: 0.7rem !important;
+      }
+      .single-post-block-content__date-author{
+        font-size: 0.8rem;
+        color: #888;
+        margin: 0;
+      }
+      @media screen and (max-width: 640px){
+        .single-post-block{
+          display: flex;
+          flex-direction: column;
+          flex-wrap: nowrap;
+          justify-content: space-between;
+          align-items: flex-start;     
+          background: #fff; 
+          padding: 0.5rem 1rem;
+          box-shadow: 0 0.2rem 1.3rem -0.3rem rgba(0,0,0,0.15);
+          margin-bottom: 1.5rem;
+          border-radius: 0.5rem;
+        }        
+        .single-post-block-image{
+          width: 100% !important;
+          margin-right: 0 !important;
+        }
+        .single-post-block-content{
+          width: 100% !important;
+          max-width: 100%;
+        }  
+      }
+
     `}</style>
   </main>
 )

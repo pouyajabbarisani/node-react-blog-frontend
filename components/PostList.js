@@ -1,78 +1,46 @@
+import { useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { NetworkStatus } from 'apollo-client'
-import gql from 'graphql-tag'
+import config from '../config'
 import ErrorMessage from './ErrorMessage'
+import POSTS_LIST_QUERY from '../queries/posts-list'
+import htmlToText from 'html-to-text';
+import { XmlEntities as Entities } from 'html-entities';
+const entities = new Entities();
 
-export const ALL_POSTS_QUERY = gql`
-   {
-    posts {
-      postID
-      slug
-      title
-      content
-      featuredImage
-      thumnail
-      author {
-        fullName
-        username
-      }
-    }
-  }
-`
+
 export default function PostList() {
   const { loading, error, data
-    // , fetchMore, networkStatus
   } = useQuery(
-    ALL_POSTS_QUERY,
+    POSTS_LIST_QUERY,
     {
-      // variables: allPostsQueryVars,
-      // Setting this value to true will make the component rerender when
-      // the "networkStatus" changes, so we are able to know if it is fetching
-      // more data
       notifyOnNetworkStatusChange: true,
     }
   )
-
-  // const loadingMorePosts = networkStatus === NetworkStatus.fetchMore
-
-  // const loadMorePosts = () => {
-  //   fetchMore({
-  //     variables: {
-  //       skip: allPosts.length,
-  //     },
-  //     updateQuery: (previousResult, { fetchMoreResult }) => {
-  //       if (!fetchMoreResult) {
-  //         return previousResult
-  //       }
-  //       return Object.assign({}, previousResult, {
-  //         // Append the new posts results to the old one
-  //         allPosts: [...previousResult.allPosts, ...fetchMoreResult.allPosts],
-  //       })
-  //     },
-  //   })
-  // }
+  useEffect(() => { console.log(error) })
+  const dateTimeLoader = (dateTime) => {
+    const createdAt = new Date(parseInt(dateTime))
+    return createdAt.getDate() + '/' + (createdAt.getMonth() + 1) + '/' + createdAt.getFullYear()
+  }
 
   if (error) return <ErrorMessage message="Error loading posts." />
-  if (loading
-    // && !loadingMorePosts
-  ) return <div>Loading</div>
-
-  const { posts } = data
+  if (loading) return <div>Loading</div>
   // const areMorePosts = allPosts.length < _allPostsMeta.count
-
   return (
-    <section>
-      {posts.map((post, index) => (
-        <div key={index}>
-          <a href={post.slug}>{post.title}</a>
+    <section className="mainsite-maxwidth">
+      {data && data.posts && data.posts.list && data.posts.list.map((post, index) => (
+        <div className="single-post-block" key={index}>
+          <div className="single-post-block-image">
+            <a href={post.slug}><img alt={post.title} src={post.featuredImage ? config.serverURL + post.featuredImage : '/no-image.jpg'} /></a>
+          </div>
+          <div className="single-post-block-content">
+            <a href={post.slug}><h2>{post.title}</h2></a>
+
+            {(post.author.fullName || post.created_at) && <div className="single-post-block-content__date-author"><span>{post.author.fullName ? post.author.fullName + ' | ' : ''}</span><span>{post.created_at ? dateTimeLoader(post.created_at) : ''}</span></div>}
+
+            <p>{htmlToText.fromString(entities.decode(post.content), { ignoreImage: true }).slice(0, 220).split(' ').slice(0, -1).join(' ') + '...'}</p>
+          </div>
         </div>
       ))}
-      {/* {areMorePosts && (
-        <button onClick={() => loadMorePosts()} disabled={loadingMorePosts}>
-          {loadingMorePosts ? 'Loading...' : 'Show More'}
-        </button>
-      )} */}
-      <style jsx>{``}</style>
     </section>
   )
 }
