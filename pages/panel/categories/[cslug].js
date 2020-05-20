@@ -49,7 +49,7 @@ const AddCategory = () => {
 
    const onEditCategory = async (e) => {
       e.preventDefault();
-      if (called && !checkSlugLoading && (checkSlugData && checkSlugData.category)) {
+      if (called && !checkSlugLoading && (checkSlugData && checkSlugData.category && (checkSlugData.category.slug != router.query.cslug))) {
          alert.error('Entered slug is exist, please enter another slug!')
       }
       else {
