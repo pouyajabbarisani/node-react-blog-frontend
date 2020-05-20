@@ -5,16 +5,21 @@ import ErrorMessage from './ErrorMessage'
 import POSTS_LIST_QUERY from '../queries/posts-list'
 import htmlToText from 'html-to-text';
 import { XmlEntities as Entities } from 'html-entities';
+import Router from 'next/router'
+import Pagination from './Pagination'
 const entities = new Entities();
 
 
-export default function PostList() {
+export default function PostList(props) {
   const { loading, error, data
   } = useQuery(
     POSTS_LIST_QUERY,
     {
       notifyOnNetworkStatusChange: true,
-    }
+      variables: {
+        page: parseInt(props.page) || 1
+      }
+    },
   )
   useEffect(() => { console.log(error) })
   const dateTimeLoader = (dateTime) => {
@@ -25,6 +30,8 @@ export default function PostList() {
   if (error) return <ErrorMessage message="Error loading posts." />
   if (loading) return <div>Loading</div>
   // const areMorePosts = allPosts.length < _allPostsMeta.count
+
+
   return (
     <section className="mainsite-maxwidth">
       {data && data.posts && data.posts.list && data.posts.list.map((post, index) => (
@@ -41,6 +48,7 @@ export default function PostList() {
           </div>
         </div>
       ))}
+      {!loading && data && <Pagination getNewPage={(page) => Router.push('/page/' + page)} currentPage={(data.posts && data.posts.page) || 1} resultPerPage={10} resultCount={(data.posts && data.posts.total) || 10} />}
     </section>
   )
 }
