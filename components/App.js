@@ -20,8 +20,7 @@ export default ({ children }) => (
         color: #02e;        
       }
       p {
-        font-size: 1rem;
-        line-height: 24px;
+        line-height: 1.7;
       }
       .maxwidth{
         width: 60rem;
@@ -337,7 +336,52 @@ export default ({ children }) => (
           max-width: 100%;
         }  
       }
-
+      .single-post-container{
+        width: 100%;
+        margin: 1rem 0 3rem;
+     }
+     .single-post-container__featured-image-container{
+        width: 100%;
+        oveflow: hidden;
+     }
+     .single-post-container__featured-image-container img{
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0.5rem;
+     }
+     .single-post-container__content-body{
+        line-height: 1.7 !important;
+        color: #333;
+     }
+     .single-post-container__content-body .image{
+      margin: 1rem auto;
+      max-width: 100%;
+     }
+     .single-post-container__content-body .image figcaption{
+      color: #777;
+      font-size: 0.9rem !important;
+      text-align: center;
+     }
+     .single-post-container__content-body img,
+     .single-post-container__content-body .image{
+        max-width: 100%;
+     }
+     .single-post-container__content-body p{
+        font-size: 1.1rem !important;
+        line-height: 1.7 !important;
+        color: #333;
+     }
+     .single-post-block-content__categories {
+       font-size: 1rem !important;
+       color: #777;
+       margin-top: 1rem;
+     }
+     .single-post-block-content__categories > span > span{
+        margin: 0.2rem 0.3rem;
+        border-radius: 0.3rem;
+        background: #eee;
+        padding: 0.2rem 0.3rem;
+      }
     `}</style>
   </main>
 )
