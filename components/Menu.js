@@ -1,24 +1,35 @@
 import Link from 'next/link'
+import { withApollo } from '../lib/apollo'
+import gql from 'graphql-tag'
+import { useQuery } from '@apollo/react-hooks'
 import { withRouter } from 'next/router'
 
+const GET_CATEGORIES = gql`
+   query categories {
+      categories {
+         title
+         slug
+      }
+   }
+`
+
+
 const Menu = ({ router: { pathname } }) => {
+   const { loading, error, data } = useQuery(GET_CATEGORIES)
    return (
       <ul className="menu-container">
          <li>
-            <Link href="/register">
-               <a className={pathname === '/' ? 'is-active' : ''}>reg</a>
-            </Link>
-         </li>
-         <li>
             <Link href="/">
-               <a className={pathname === '/' ? 'is-active' : ''}>category</a>
+               <a className={pathname === '/' ? 'is-active' : ''}>Home</a>
             </Link>
          </li>
-         <li>
-            <Link href="/">
-               <a className={pathname === '/' ? 'is-active' : ''}>category</a>
+         {error && 'Error in loading menu!'}
+         {!loading && data && data.categories && data.categories.map((singleCategory, index) => <li key={singleCategory.slug}>
+            <Link href={`/categories/${singleCategory.slug}`}>
+               <a className={pathname === '/' ? 'is-active' : ''}>{singleCategory.title}</a>
             </Link>
-         </li>
+         </li>)}
+
          <style jsx>{`
             .menu-container{
                list-style: none;
@@ -38,4 +49,4 @@ const Menu = ({ router: { pathname } }) => {
       </ul>
    )
 }
-export default withRouter(Menu)
+export default withApollo({ ssr: true })(withRouter(Menu))
