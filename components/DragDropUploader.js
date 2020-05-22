@@ -36,6 +36,12 @@ const DragDropUploader = (props) => {
 
    const { getRootProps, getInputProps, isDragActive } = useDropzone({ accept: 'image/jpeg, image/png', maxSize: 2097152, onDrop })
 
+   useEffect(() => {
+      if (!file && props.default && props.default.value != '') {
+         setFile(props.default)
+      }
+   }, [props.default])
+
    return (
       <div className="dropzone-container">
          <label className="input-label">Featured Image:</label>

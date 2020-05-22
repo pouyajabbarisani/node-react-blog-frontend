@@ -96,6 +96,8 @@ const PanelLayout = (props) => {
                }
                .dashboard-sidebar-container{
                   width: 12rem;
+                  flex-basis: 12rem;
+                  min-width: 12rem;
                   display: block;
                   height: 100vh;
                   position: -webkit-sticky;

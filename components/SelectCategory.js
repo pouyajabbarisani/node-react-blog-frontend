@@ -19,6 +19,12 @@ const SelectCategory = props => {
    const [selectedCategories, setSelectedCategories] = useState([]);
 
    useEffect(() => {
+      if (props.defaultValue && props.defaultValue.length) {
+         setSelectedCategories(props.defaultValue);
+      }
+   }, [props.defaultValue])
+
+   useEffect(() => {
       if (getCategoriesData && getCategoriesData.categories) {
          const initialCategories = []
          for (let singleCategory of getCategoriesData.categories) {
