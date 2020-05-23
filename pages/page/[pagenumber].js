@@ -4,6 +4,7 @@ import PostList from '../../components/PostList'
 import { withApollo } from '../../lib/apollo'
 import Head from 'next/head'
 import Router, { useRouter } from 'next/router'
+import Footer from '../../components/Footer'
 
 const IndexPage = () => {
    const router = useRouter();
@@ -16,6 +17,7 @@ const IndexPage = () => {
 
          <Header />
          <PostList page={router.query.pagenumber} />
+         <Footer />
       </App>
    )
 }
