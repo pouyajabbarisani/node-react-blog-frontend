@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { withApollo } from '../lib/apollo'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
-import { withRouter } from 'next/router'
+import { withRouter, useRouter } from 'next/router'
 
 const GET_CATEGORIES = gql`
    query categories {
@@ -14,7 +14,9 @@ const GET_CATEGORIES = gql`
 `
 
 
-const Menu = ({ router: { pathname } }) => {
+const Menu = () => {
+   const { pathname, query } = useRouter()
+
    const { loading, error, data } = useQuery(GET_CATEGORIES)
    return (
       <ul className="menu-container">
@@ -26,7 +28,7 @@ const Menu = ({ router: { pathname } }) => {
          {error && 'Error in loading menu!'}
          {!loading && data && data.categories && data.categories.map((singleCategory, index) => <li key={singleCategory.slug}>
             <Link href={`/categories/${singleCategory.slug}`}>
-               <a className={pathname === '/' ? 'is-active' : ''}>{singleCategory.title}</a>
+               <a className={query && query.catslug && (`/categories/${query.catslug}` === `/categories/${singleCategory.slug}` ? 'is-active' : '')}>{singleCategory.title}</a>
             </Link>
          </li>)}
 
@@ -45,8 +47,11 @@ const Menu = ({ router: { pathname } }) => {
                display: block;
                padding: 1rem 0.5rem;
             }
+            .menu-container .is-active {
+               color: #02e !important;
+            }
          `}</style>
       </ul>
    )
 }
-export default withApollo({ ssr: true })(withRouter(Menu))
+export default withApollo({ ssr: true })(Menu)
