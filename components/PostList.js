@@ -44,10 +44,10 @@ export default function PostList(props) {
       {props.categorized ? data && data.category && data.category.pagedPosts && data.category.pagedPosts.list && data.category.pagedPosts.list.map((post, index) => (
         <div className="single-post-block" key={index}>
           <div className="single-post-block-image">
-            <a href={post.slug}><img alt={post.title} src={post.featuredImage ? config.serverURL + post.featuredImage : '/no-image.jpg'} /></a>
+            <a href={'/' + post.slug}><img alt={post.title} src={post.featuredImage ? config.serverURL + post.featuredImage : '/no-image.jpg'} /></a>
           </div>
           <div className="single-post-block-content">
-            <a href={post.slug}><h2>{post.title}</h2></a>
+            <a href={'/' + post.slug}><h2>{post.title}</h2></a>
 
             {(post.author.fullName || post.created_at) && <div className="single-post-block-content__date-author"><span>{post.author.fullName ? post.author.fullName + ' | ' : ''}</span><span>{post.created_at ? dateTimeLoader(post.created_at) : ''}</span></div>}
 
@@ -57,10 +57,10 @@ export default function PostList(props) {
       )) : data && data.posts && data.posts.list && data.posts.list.map((post, index) => (
         <div className="single-post-block" key={index}>
           <div className="single-post-block-image">
-            <a href={post.slug}><img alt={post.title} src={post.featuredImage ? config.serverURL + post.featuredImage : '/no-image.jpg'} /></a>
+            <a href={'/' + post.slug}><img alt={post.title} src={post.featuredImage ? config.serverURL + post.featuredImage : '/no-image.jpg'} /></a>
           </div>
           <div className="single-post-block-content">
-            <a href={post.slug}><h2>{post.title}</h2></a>
+            <a href={'/' + post.slug}><h2>{post.title}</h2></a>
 
             {(post.author.fullName || post.created_at) && <div className="single-post-block-content__date-author"><span>{post.author.fullName ? post.author.fullName + ' | ' : ''}</span><span>{post.created_at ? dateTimeLoader(post.created_at) : ''}</span></div>}
 
