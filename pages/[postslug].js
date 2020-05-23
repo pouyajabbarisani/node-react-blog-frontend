@@ -9,6 +9,7 @@ import gql from 'graphql-tag'
 import config from '../config'
 import Router, { useRouter } from 'next/router'
 import { XmlEntities as Entities } from 'html-entities';
+import Footer from '../components/Footer'
 const entities = new Entities();
 
 
@@ -67,6 +68,7 @@ const SinglePost = () => {
             </div> : <p>Post Not Found! - 404</p>)}
          </section>
 
+         <Footer />
       </App>
    )
 }

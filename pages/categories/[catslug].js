@@ -1,5 +1,6 @@
 import App from '../../components/App'
 import Header from '../../components/Header'
+import Footer from '../../components/Footer'
 import PostList from '../../components/PostList'
 import { withApollo } from '../../lib/apollo'
 import Head from 'next/head'
@@ -17,6 +18,8 @@ const IndexPage = () => {
 
          <Header />
          <PostList categorized={true} slug={router.query.catslug} />
+
+         <Footer />
       </App>
    )
 }

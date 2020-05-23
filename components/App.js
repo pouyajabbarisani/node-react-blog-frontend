@@ -17,10 +17,19 @@ export default ({ children }) => (
         color:initial;
       }
       a:hover {
-        color: #02e;        
+        color: #02e;     
       }
       p {
         line-height: 1.7;
+      }
+      footer{
+        margin-top: 4rem;
+        border-top: 1px solid #eee;
+        padding: 1rem;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #777;
       }
       .maxwidth{
         width: 60rem;

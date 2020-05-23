@@ -4,6 +4,7 @@ import CheckAuthorExist from '../components/CheckAuthorExist'
 import PostList from '../components/PostList'
 import Head from 'next/head'
 import { withApollo } from '../lib/apollo'
+import Footer from '../components/Footer'
 
 const IndexPage = () => (
   <App>
@@ -15,6 +16,7 @@ const IndexPage = () => (
     <Header />
     <CheckAuthorExist />
     <PostList />
+    <Footer />
   </App>
 )
 
