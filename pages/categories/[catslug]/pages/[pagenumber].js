@@ -1,7 +1,8 @@
-import App from '../../components/App'
-import Header from '../../components/Header'
-import PostList from '../../components/PostList'
-import { withApollo } from '../../lib/apollo'
+import App from '../../../../components/App'
+import Header from '../../../../components/Header'
+import Footer from '../../../../components/Footer'
+import PostList from '../../../../components/PostList'
+import { withApollo } from '../../../../lib/apollo'
 import Head from 'next/head'
 import Router, { useRouter } from 'next/router'
 
@@ -15,7 +16,9 @@ const IndexPage = () => {
          </Head>
 
          <Header />
-         <PostList page={router.query.pagenumber} />
+         <PostList categorized={true} slug={router.query.catslug} page={router.query.pagenumber} />
+
+         <Footer />
       </App>
    )
 }

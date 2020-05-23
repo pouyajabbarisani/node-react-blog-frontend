@@ -68,7 +68,12 @@ export default function PostList(props) {
           </div>
         </div>
       ))}
-      {!loading && data && <Pagination getNewPage={(page) => Router.push('/page/' + page)} currentPage={(data.posts && data.posts.page) || 1} resultPerPage={10} resultCount={(data.posts && data.posts.total) || 10} />}
+      {!loading && data && <Pagination
+        getNewPage={(page) => Router.push(props.categorized ? `/categories/${props.slug}/pages/${page}` : `/page/${page}`)}
+        currentPage={(props.categorized ? (data && data.category && data.category.pagedPosts && data.category.pagedPosts.page) : (data && data.posts && data.posts.page)) || 1}
+        resultPerPage={10}
+        resultCount={(props.categorized ? (data && data.category && data.category.pagedPosts && data.category.pagedPosts.total) : (data.posts && data.posts.total)) || 10} />
+      }
     </section>
   )
 }
