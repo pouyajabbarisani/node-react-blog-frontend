@@ -5,12 +5,28 @@ import Link from 'next/link'
 import { withRouter } from 'next/router'
 import PanelLoading from './PanelLoading'
 import { withApollo } from '../lib/apollo'
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag'
 import Router from 'next/router'
 
+const LOG_OUT = gql`
+   mutation Logout{
+      logout{
+         status
+      }
+   }
+`
 
 const PanelLayout = (props) => {
 
+   const [logout] = useMutation(LOG_OUT);
    const [sideMenuStatus, setSideMenuStatus] = useState('close') // for responsive menu toggle
+
+   const onLogoutClick = () => {
+      logout().then(() => {
+         Router.push(`/`)
+      })
+   }
 
    return (
       <App>
@@ -18,7 +34,6 @@ const PanelLayout = (props) => {
             <title>{props.pageTitle || 'Dashboard'}</title>
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
          </Head>
-         {/* <div className="dashboard-overflow-container"> */}
          <div className={(sideMenuStatus == 'open') ? "open-responsive-side-menu dashboard-container" : "dashboard-container"} >
             <section className="dashboard-sidebar-container">
                <div>
@@ -51,16 +66,19 @@ const PanelLayout = (props) => {
                   setSideMenuStatus('close')
                }
             }}>
-               <div>
-                  <span className="dashboard-responisve-trigger-button" onClick={() => {
-                     (sideMenuStatus == 'open') ? setSideMenuStatus('close') : setSideMenuStatus('open');
-                  }}>☰</span>
-
+               <div className="dashboard-header-container">
+                  <div>
+                     <span className="dashboard-responisve-trigger-button" onClick={() => {
+                        (sideMenuStatus == 'open') ? setSideMenuStatus('close') : setSideMenuStatus('open');
+                     }}>☰</span>
+                  </div>
+                  <div>
+                     <span className="logout" onClick={() => onLogoutClick()}>⍈ Logout</span>
+                  </div>
                </div>
                <div>{props.children || ''}</div>
             </section>
          </div>
-         {/* </div> */}
 
          <style jsx>{`
 
@@ -71,20 +89,39 @@ const PanelLayout = (props) => {
                   align-items: stretch;
                   align-content: flex-start;
                }
+               .dashboard-header-container{
+                  display: flex;
+                  flex-direction: row;
+                  flex-wrap: nowrap;
+                  justify-content: space-between;
+                  align-items: center;               
+               }
+               .dashboard-header-container .logout{
+                  margin: 1rem 1rem;
+                  padding: 0.5rem;
+                  border-radius: 0.5rem;
+                  background: #f5f5f5;
+                  color: #444;
+                  cursor: pointer;
+                  display: inline-block;
+               }
                .dashboard-responisve-trigger-button{
                   font-size: 2rem;
                   width: 3rem;
                   height: 3rem;
-                  display: flex;
                   flex-direction: column;
                   flex-wrap: nowrap;
                   justify-content: center;
                   align-items: center;
                   align-content: center;
                   color: #02e;   
-                  margin: 0.5rem;         
+                  margin: 0.5rem;  
+                  display: none;       
                }
                @media screen and (max-width: 768px){
+                  .dashboard-responisve-trigger-button{
+                     display: flex !important;
+                  }
                   .dashboard-container{
                      width: calc(100% + 12rem);
                      transition: transform 0.3s;
@@ -152,4 +189,4 @@ const PanelLayout = (props) => {
    )
 }
 
-export default withRouter(PanelLayout);
+export default withApollo({ ssr: true })(withRouter(PanelLayout));
