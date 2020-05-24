@@ -22,13 +22,13 @@ const AUTHORS_LIST_QUERY = gql`
       }
    }
 `
-// const DELETE_CATEGORY = gql`
-//    mutation DeleteCategory($slug: String!) {
-//       deleteCategory (slug: $slug){
-//          status
-//       }
-//    }
-// `
+const DELETE_AUTHOR = gql`
+   mutation DeleteAuthor($username: String!) {
+      deleteAuthor (username: $username){
+         status
+      }
+   }
+`
 
 const Authors = () => {
 
@@ -36,26 +36,15 @@ const Authors = () => {
    const router = useRouter()
 
    const { loading, error, data } = useQuery(AUTHORS_LIST_QUERY, { notifyOnNetworkStatusChange: true })
-   // const [deleteCategory] = useMutation(DELETE_CATEGORY);
+   const [deleteAuthor] = useMutation(DELETE_AUTHOR);
 
-   // const onDeleteCategory = (slug) => {
-   //    deleteCategory({
-   //       variables: { slug }, refetchQueries: [{
-   //          query: gql`
-   //          {
-   //             categories {
-   //                title
-   //                slug
-   //                posts{
-   //                   title
-   //                }
-   //             }
-   //          }
-   //       `}],
-   //    }).then(({ data }) => {
-   //       (data && data.deleteCategory && data.deleteCategory.status) ? alert.success('Category deleted!') : alert.error('Error in deleting the category!')
-   //    }).catch(err => alert.error(err.toString()));
-   // }
+   const onDeleteAuthor = (username) => {
+      deleteAuthor({
+         variables: { username }, refetchQueries: [{ query: AUTHORS_LIST_QUERY }],
+      }).then(({ data }) => {
+         (data && data.deleteAuthor && data.deleteAuthor.status) ? alert.success('Author deleted!') : alert.error('Error in deleting author!')
+      }).catch(err => alert.error(err.toString()));
+   }
 
    useEffect(() => {
       (router.query && router.query.create && router.query.create == "success") && alert.success('Author created!');
@@ -83,7 +72,7 @@ const Authors = () => {
                      <a className="button">Edit</a>
                   </Link>
                   <Button label="Delete" className="button red-button"
-                  // onClick={() => onDeleteCategory(singleAuthor.slug)} 
+                     onClick={() => onDeleteAuthor(singleAuthor.username)}
                   />
                </div>
             </div>) : 'authors list is empty!')}
