@@ -50,7 +50,7 @@ const AuthPanelLayout = (props) => {
       // check auth from local state of apollo on re-routing without full page reload 
       if (!loading) {
          if (data) {
-            setAuthData(data)
+            setAuthData(data.authStatus)
             setAuthLoading(false)
          }
          else if (!data) {
@@ -64,7 +64,7 @@ const AuthPanelLayout = (props) => {
       // chech auth from server on full page reload
       if (!checkLoading && !checkLoading && checkData) {
          setLocalAuthStatus({ variables: { fullName: checkData.checkAuth.fullName, username: checkData.checkAuth.username, isManager: checkData.checkAuth.isManager } }).then(() => {
-            setAuthData({ ...checkData.checkAuth })
+            setAuthData(checkData.checkAuth)
             setAuthLoading(false)
          })
       }
