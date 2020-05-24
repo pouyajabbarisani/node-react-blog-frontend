@@ -30,8 +30,8 @@ const Login = () => {
    const alert = useAlert()
    const [loginFields, setLoginField] = useState({})
    const [isButtonLoading, setIsButtonLoading] = useState(false)
-   const [login, { _: mutationLoading, __: mutationError }] = useMutation(LOGIN);
-   const [testdata] = useMutation(SET_AUTH);
+   const [login] = useMutation(LOGIN);
+   const [setLocalAuthStatus] = useMutation(SET_AUTH);
 
    const onLogin = async (e) => {
       e.preventDefault();
@@ -43,7 +43,7 @@ const Login = () => {
          setIsButtonLoading(true);
          login({ variables: { ...loginFields } }).then(({ data }) => {
             if (data && data.login && data.login.username) {
-               testdata({ variables: { fullName: data.login.fullName, username: data.login.username, isManager: data.login.isManager } }).then(() => {
+               setLocalAuthStatus({ variables: { fullName: data.login.fullName, username: data.login.username, isManager: data.login.isManager } }).then(() => {
                   Router.push(`/panel`)
                })
             }

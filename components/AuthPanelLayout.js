@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { useQuery } from '@apollo/react-hooks'
+import { useEffect, useState } from 'react'
+import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import { withApollo } from '../lib/apollo'
 import Router from 'next/router'
@@ -15,19 +15,69 @@ const CHECK_AUTH = gql`
       }
    }
 `
+const GET_AUTH_STATUS = gql`
+   query AuthStatus {
+      authStatus @client {
+         fullName
+         isAuthenticated
+         isManager
+         username
+      }
+   }
+`;
+const SET_AUTH = gql`
+   mutation SetAuth($fullName: String!, $username: String!, $isManager: Boolean) {
+      setAuth(fullName: $fullName, username: $username, isManager: $isManager) @client
+   }
+`;
+
 
 const AuthPanelLayout = (props) => {
-   const { loading, error, data } = useQuery(CHECK_AUTH)
+
+   const { data, loading } = useQuery(GET_AUTH_STATUS);
+   const [getAuthStatus, { data: checkData, loading: checkLoading, error: checkError }] = useLazyQuery(CHECK_AUTH);
+   const [setLocalAuthStatus] = useMutation(SET_AUTH);
+   const [authData, setAuthData] = useState(null);
+   const [authLoading, setAuthLoading] = useState(true);
+
+   // useEffect(() => {
+   //    if (loading == false && (!data || !data.checkAuth || !data.checkAuth.username)) {
+   //       Router.push('/login');
+   //    }
+   // }, [loading]);
 
    useEffect(() => {
-      if (loading == false && (!data || !data.checkAuth || !data.checkAuth.username)) {
+      // check auth from local state of apollo on re-routing without full page reload 
+      if (!loading) {
+         if (data) {
+            setAuthData(data)
+            setAuthLoading(false)
+         }
+         else if (!data) {
+            // if not exist, then check from server
+            getAuthStatus()
+         }
+      }
+   }, [loading])
+
+   useEffect(() => {
+      // chech auth from server on full page reload
+      if (!checkLoading && !checkLoading && checkData) {
+         setLocalAuthStatus({ variables: { fullName: checkData.checkAuth.fullName, username: checkData.checkAuth.username, isManager: checkData.checkAuth.isManager } }).then(() => {
+            setAuthData({ ...checkData.checkAuth })
+            setAuthLoading(false)
+         })
+      }
+      else if (!checkLoading && checkError) {
+         setAuthData(null)
+         setAuthLoading(false)
          Router.push('/login');
       }
-   }, [loading]);
+   }, [checkData, checkLoading, checkError])
 
-   if (loading) return <PanelLoading />
-   if (loading == false && (!data || !data.checkAuth || !data.checkAuth.username)) return <p>Login again!</p>
-   return <PanelLayout pageTitle={props.pageTitle} authData={data}>{props.children}</PanelLayout>
+   if (authLoading) return <PanelLoading />
+   if (!authLoading && (!authData)) return <p>Login again!</p>
+   if (!authLoading && authData) return <PanelLayout pageTitle={props.pageTitle} authData={authData}>{props.children}</PanelLayout>
 }
 
 export default withApollo({ ssr: true })(AuthPanelLayout)

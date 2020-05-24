@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { withRouter } from 'next/router'
 import PanelLoading from './PanelLoading'
 import { withApollo } from '../lib/apollo'
-import { useMutation } from '@apollo/react-hooks';
+import { useMutation, useQuery, useLazyQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
 import Router from 'next/router'
 
@@ -16,6 +16,7 @@ const LOG_OUT = gql`
       }
    }
 `
+
 
 const PanelLayout = (props) => {
 
@@ -53,12 +54,12 @@ const PanelLayout = (props) => {
                   <Link href="/panel/categories">
                      <a className={props.router.pathname === '/panel/categories' ? 'is-active' : ''}>Categories</a>
                   </Link>
-                  <Link href="/panel/add-author">
+                  {props.authData.isManager && <Link href="/panel/add-author">
                      <a className={props.router.pathname === '/panel/add-author' ? 'is-active' : ''}>Add Author</a>
-                  </Link>
-                  <Link href="/panel/authors">
+                  </Link>}
+                  {props.authData.isManager && <Link href="/panel/authors">
                      <a className={props.router.pathname === '/panel/authors' ? 'is-active' : ''}>Authors</a>
-                  </Link>
+                  </Link>}
                </div>
             </section>
             <section className="dashboard-content-container" onClick={() => {
