@@ -5,4 +5,3 @@ See back end respository in here: [node-react-blog-backend](https://github.com/p
 
 For front-end, I'm using React (extended from **NextJs** example with apollo client for using **GraphQL**).
 
-🚧 under construction 🚧
