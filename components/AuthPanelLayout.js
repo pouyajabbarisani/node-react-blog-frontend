@@ -32,19 +32,13 @@ const SET_AUTH = gql`
 `;
 
 
-const AuthPanelLayout = (props) => {
+export const AuthPanelLayout = (props) => {
 
    const { data, loading } = useQuery(GET_AUTH_STATUS);
    const [getAuthStatus, { data: checkData, loading: checkLoading, error: checkError }] = useLazyQuery(CHECK_AUTH);
    const [setLocalAuthStatus] = useMutation(SET_AUTH);
    const [authData, setAuthData] = useState(null);
    const [authLoading, setAuthLoading] = useState(true);
-
-   // useEffect(() => {
-   //    if (loading == false && (!data || !data.checkAuth || !data.checkAuth.username)) {
-   //       Router.push('/login');
-   //    }
-   // }, [loading]);
 
    useEffect(() => {
       // check auth from local state of apollo on re-routing without full page reload 
