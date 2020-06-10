@@ -8,6 +8,16 @@ import Button from '../../../components/Button'
 import { useAlert } from 'react-alert'
 import { useRouter } from 'next/router'
 
+const GET_AUTH_STATUS = gql`
+   query AuthStatus {
+      authStatus @client {
+         fullName
+         isAuthenticated
+         isManager
+         username
+      }
+   }
+`;
 
 const AUTHORS_LIST_QUERY = gql`
    {
@@ -35,15 +45,23 @@ const Authors = () => {
    const alert = useAlert()
    const router = useRouter()
 
+   const { loading: authStatusLoading, error: authStatusError, data: atuhStatusData } = useQuery(GET_AUTH_STATUS)
    const { loading, error, data } = useQuery(AUTHORS_LIST_QUERY, { notifyOnNetworkStatusChange: true })
    const [deleteAuthor] = useMutation(DELETE_AUTHOR);
 
    const onDeleteAuthor = (username) => {
-      deleteAuthor({
-         variables: { username }, refetchQueries: [{ query: AUTHORS_LIST_QUERY }],
-      }).then(({ data }) => {
-         (data && data.deleteAuthor && data.deleteAuthor.status) ? alert.success('Author deleted!') : alert.error('Error in deleting author!')
-      }).catch(err => alert.error(err.toString()));
+      if (!authStatusLoading && atuhStatusData) {
+         if (username !== atuhStatusData.authStatus.username) {
+            deleteAuthor({
+               variables: { username }, refetchQueries: [{ query: AUTHORS_LIST_QUERY }],
+            }).then(({ data }) => {
+               (data && data.deleteAuthor && data.deleteAuthor.status) ? alert.success('Author deleted!') : alert.error('Error in deleting author!')
+            }).catch(err => alert.error(err.toString()));
+         }
+         else {
+            alert.error('You can not delete your own profile!')
+         }
+      }
    }
 
    useEffect(() => {
