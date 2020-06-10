@@ -68,9 +68,6 @@ const Authors = () => {
                   Posts count: {singleAuthor.posts ? singleAuthor.posts.length : '0'}
                </div>
                <div>
-                  <Link href={`/panel/authors/${singleAuthor.slug}`}>
-                     <a className="button">Edit</a>
-                  </Link>
                   <Button label="Delete" className="button red-button"
                      onClick={() => onDeleteAuthor(singleAuthor.username)}
                   />
