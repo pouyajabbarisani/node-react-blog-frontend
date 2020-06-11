@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { withApollo } from '../../lib/apollo'
 import AuthPanelLayout from '../../components/AuthPanelLayout'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
@@ -170,4 +169,4 @@ const AddAuthor = (props) => {
    )
 }
 
-export default withApollo({ ssr: true })(AddAuthor)
+export default AddAuthor

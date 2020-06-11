@@ -1,7 +1,6 @@
 // edit category file
 
 import { useState, useEffect } from 'react'
-import { withApollo } from '../../../lib/apollo'
 import AuthPanelLayout from '../../../components/AuthPanelLayout'
 import Input from '../../../components/Input'
 import Button from '../../../components/Button'
@@ -138,4 +137,4 @@ const AddCategory = () => {
    )
 }
 
-export default withApollo({ ssr: true })(AddCategory);
+export default AddCategory

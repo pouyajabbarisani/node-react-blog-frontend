@@ -2,13 +2,15 @@ import { useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import config from '../config'
 import ErrorMessage from './ErrorMessage'
-import POSTS_LIST_QUERY from '../queries/posts-list'
-import CATEGORY_POSTS_LIST_QUERY from '../queries/category-posts-list'
 import htmlToText from 'html-to-text';
 import { XmlEntities as Entities } from 'html-entities';
 import Router from 'next/router'
 import Pagination from './Pagination'
 import { useRouter } from 'next/router'
+
+import POSTS_LIST_QUERY from '../queries/posts-list'
+import CATEGORY_POSTS_LIST_QUERY from '../queries/category-posts-list'
+
 const entities = new Entities();
 
 

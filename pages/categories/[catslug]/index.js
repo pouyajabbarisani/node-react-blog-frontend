@@ -2,9 +2,11 @@ import App from '../../../components/App'
 import Header from '../../../components/Header'
 import Footer from '../../../components/Footer'
 import PostList from '../../../components/PostList'
-import { withApollo } from '../../../lib/apollo'
 import Head from 'next/head'
 import Router, { useRouter } from 'next/router'
+
+import CATEGORY_POSTS_LIST_QUERY from '../../../queries/category-posts-list'
+import { initializeApollo } from '../../../lib/apolloClient'
 
 const IndexPage = () => {
    const router = useRouter();
@@ -18,10 +20,25 @@ const IndexPage = () => {
 
          <Header />
          <PostList categorized={true} slug={router.query.catslug} />
-
          <Footer />
       </App>
    )
 }
 
-export default withApollo({ ssr: true })(IndexPage)
+export async function getServerSideProps(context) {
+   const apolloClient = initializeApollo()
+
+   await apolloClient.query({
+      query: CATEGORY_POSTS_LIST_QUERY,
+      variables: { slug: context.params.catslug, page: 1 },
+   })
+
+   return {
+      props: {
+         initialApolloState: apolloClient.cache.extract(),
+      },
+   }
+}
+
+
+export default IndexPage

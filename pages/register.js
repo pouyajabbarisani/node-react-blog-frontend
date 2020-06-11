@@ -8,7 +8,6 @@ import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 import ErrorMessage from '../components/ErrorMessage'
 import Loading from '../components/Loading'
-import { withApollo } from '../lib/apollo'
 import Router from 'next/router'
 import { createAuthorValidator } from '../validators/create-author'
 import { useAlert } from 'react-alert'
@@ -45,7 +44,7 @@ const Register = () => {
          // check, if initial author (manager) exist, then return to home page
          Router.push(`/`)
       }
-   }, [])
+   }, [data])
 
    const [formFields, setFormField] = useState({});
    const [formFieldsErrors, setFormFieldsErrors] = useState({});
@@ -115,4 +114,4 @@ const Register = () => {
    )
 }
 
-export default withApollo({ ssr: true })(Register)
+export default Register

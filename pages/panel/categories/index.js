@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { withApollo } from "../../../lib/apollo"
 import AuthPanelLayout from "../../../components/AuthPanelLayout"
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
@@ -121,4 +120,4 @@ const Categories = () => {
    )
 }
 
-export default withApollo({ ssr: true })(Categories)
+export default Categories

@@ -3,8 +3,10 @@ import Header from '../components/Header'
 import CheckAuthorExist from '../components/CheckAuthorExist'
 import PostList from '../components/PostList'
 import Head from 'next/head'
-import { withApollo } from '../lib/apollo'
 import Footer from '../components/Footer'
+
+import POSTS_LIST_QUERY from '../queries/posts-list'
+import { initializeApollo } from '../lib/apolloClient'
 
 const IndexPage = () => (
   <App>
@@ -20,4 +22,19 @@ const IndexPage = () => (
   </App>
 )
 
-export default withApollo({ ssr: true })(IndexPage)
+export async function getServerSideProps(context) {
+  const apolloClient = initializeApollo()
+
+  await apolloClient.query({
+    query: POSTS_LIST_QUERY,
+    variables: { page: 1 },
+  })
+
+  return {
+    props: {
+      initialApolloState: apolloClient.cache.extract(),
+    },
+  }
+}
+
+export default IndexPage

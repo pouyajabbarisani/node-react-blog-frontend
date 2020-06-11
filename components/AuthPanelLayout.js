@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-import { withApollo } from '../lib/apollo'
 import Router from 'next/router'
 import PanelLoading from './PanelLoading'
 import PanelLayout from './PanelLayout'
@@ -74,4 +73,4 @@ export const AuthPanelLayout = (props) => {
    if (!authLoading && authData) return <PanelLayout pageTitle={props.pageTitle} authData={authData}>{props.children}</PanelLayout>
 }
 
-export default withApollo({ ssr: true })(AuthPanelLayout)
+export default AuthPanelLayout

@@ -4,7 +4,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { withRouter } from 'next/router'
 import PanelLoading from './PanelLoading'
-import { withApollo } from '../lib/apollo'
 import { useMutation, useQuery, useLazyQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag'
 import Router from 'next/router'
@@ -190,4 +189,4 @@ const PanelLayout = (props) => {
    )
 }
 
-export default withApollo({ ssr: true })(withRouter(PanelLayout));
+export default withRouter(PanelLayout)

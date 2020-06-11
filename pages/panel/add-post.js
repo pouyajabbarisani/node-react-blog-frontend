@@ -6,7 +6,6 @@ import slugify from 'slugify'
 import gql from 'graphql-tag'
 import useCKEditor from '../../custom-hooks/use-ckeditor';
 import { XmlEntities as Entities } from 'html-entities';
-import { withApollo } from '../../lib/apollo'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks'
 import { useAlert } from 'react-alert'
 import SelectCategory from '../../components/SelectCategory';
@@ -166,4 +165,4 @@ const AddPost = () => {
    )
 }
 
-export default withApollo({ ssr: true })(AddPost);
+export default AddPost

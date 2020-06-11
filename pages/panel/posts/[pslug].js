@@ -4,7 +4,6 @@ import Input from '../../../components/Input'
 import Button from '../../../components/Button'
 import slugify from 'slugify'
 import gql from 'graphql-tag'
-import { withApollo } from '../../../lib/apollo'
 import { useQuery, useLazyQuery, useMutation } from '@apollo/react-hooks'
 import { useAlert } from 'react-alert'
 import SelectCategory from '../../../components/SelectCategory';
@@ -187,4 +186,4 @@ const EditPost = () => {
    )
 }
 
-export default withApollo({ ssr: true })(EditPost);
+export default EditPost

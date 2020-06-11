@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { withApollo } from '../lib/apollo'
 import gql from 'graphql-tag'
 import { useQuery } from '@apollo/react-hooks'
 import { withRouter, useRouter } from 'next/router'
@@ -74,4 +73,4 @@ const Menu = (props) => {
       </ul>
    )
 }
-export default withApollo({ ssr: true })(Menu)
+export default Menu

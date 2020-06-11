@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import gql from 'graphql-tag'
-import { withApollo } from '../lib/apollo'
 import { useQuery } from '@apollo/react-hooks'
 import Select from 'react-select';
 
@@ -64,4 +63,4 @@ const SelectCategory = props => {
    )
 }
 
-export default withApollo({ ssr: true })(SelectCategory)
+export default SelectCategory

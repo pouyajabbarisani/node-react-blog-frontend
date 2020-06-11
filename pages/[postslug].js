@@ -1,7 +1,6 @@
 import App from '../components/App'
 import Header from '../components/Header'
 import PostList from '../components/PostList'
-import { withApollo } from '../lib/apollo'
 import { useEffect } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import Head from 'next/head'
@@ -12,6 +11,8 @@ import { XmlEntities as Entities } from 'html-entities';
 import Footer from '../components/Footer'
 const entities = new Entities();
 
+import POSTS_LIST_QUERY from '../queries/posts-list'
+import { initializeApollo } from '../lib/apolloClient'
 
 const GET_SINGLE_POST = gql`
    query Post($slug: String!){
@@ -73,4 +74,19 @@ const SinglePost = () => {
    )
 }
 
-export default withApollo({ ssr: true })(SinglePost)
+export async function getServerSideProps(context) {
+   const apolloClient = initializeApollo()
+
+   await apolloClient.query({
+      query: GET_SINGLE_POST,
+      variables: { slug: context.params.postslug },
+   })
+
+   return {
+      props: {
+         initialApolloState: apolloClient.cache.extract(),
+      },
+   }
+}
+
+export default SinglePost

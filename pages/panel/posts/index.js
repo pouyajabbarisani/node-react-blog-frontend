@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { withApollo } from "../../../lib/apollo"
 import AuthPanelLayout from "../../../components/AuthPanelLayout"
 import { useLazyQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
@@ -117,4 +116,4 @@ const Posts = () => {
    )
 }
 
-export default withApollo({ ssr: true })(Posts)
+export default Posts

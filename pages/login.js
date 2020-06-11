@@ -5,7 +5,6 @@ import Input from '../components/Input'
 import Button from '../components/Button'
 import { useQuery, useMutation } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
-import { withApollo } from '../lib/apollo'
 import Router from 'next/router'
 import { loginValidator } from '../validators/login'
 import { useAlert } from 'react-alert'
@@ -98,4 +97,4 @@ const Login = () => {
    )
 }
 
-export default withApollo({ ssr: true })(Login)
+export default Login

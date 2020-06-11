@@ -1,6 +1,5 @@
 import { useAlert } from 'react-alert'
 import useCKEditor from '../custom-hooks/use-ckeditor';
-import { withApollo } from "../lib/apollo";
 import config from '../config'
 import gql from 'graphql-tag'
 import { XmlEntities as Entities } from 'html-entities';
@@ -60,4 +59,4 @@ const TextEditor = props => {
    /> : '';
 }
 
-export default withApollo()(TextEditor);
+export default TextEditor
