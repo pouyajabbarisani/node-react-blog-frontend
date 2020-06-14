@@ -41,12 +41,14 @@
     "@apollo/react-testing": "^3.1.4",
     "@babel/core": "^7.10.2",
     "@babel/preset-env": "^7.10.2",
+    "@testing-library/react": "^10.2.1",
     "babel-jest": "^26.0.1",
     "babel-plugin-graphql-tag": "^2.5.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "jest": "^26.0.1",
     "jest-dom": "^4.0.0",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "waait": "^1.0.5"
   }
 }

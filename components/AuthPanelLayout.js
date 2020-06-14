@@ -5,7 +5,7 @@ import Router from 'next/router'
 import PanelLoading from './PanelLoading'
 import PanelLayout from './PanelLayout'
 
-const CHECK_AUTH = gql`
+export const CHECK_AUTH = gql`
    query {
       checkAuth{
          fullName
@@ -14,7 +14,7 @@ const CHECK_AUTH = gql`
       }
    }
 `
-const GET_AUTH_STATUS = gql`
+export const GET_AUTH_STATUS = gql`
    query AuthStatus {
       authStatus @client {
          fullName
@@ -24,7 +24,7 @@ const GET_AUTH_STATUS = gql`
       }
    }
 `;
-const SET_AUTH = gql`
+export const SET_AUTH = gql`
    mutation SetAuth($fullName: String!, $username: String!, $isManager: Boolean) {
       setAuth(fullName: $fullName, username: $username, isManager: $isManager) @client
    }

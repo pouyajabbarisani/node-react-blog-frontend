@@ -9,7 +9,7 @@ const PanelLoading = (props) => {
             <meta name="viewport" content="initial-scale=1.0, width=device-width" />
          </Head>
 
-         <div className="page-loading-container">
+         <div className="page-loading-container" data-testid="panel-loading">
             <div className="loading-container">
                <div className="loading-bullet"></div>
                <div className="loading-bullet"></div>
