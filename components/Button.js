@@ -3,7 +3,7 @@ import { useState } from 'react'
 const Button = (props) => {
 
    const loadingLoader = () => {
-      return <div className="button-loader">
+      return <div className="button-loader" data-testid="button-loading-div">
          <div className="button-loader-bullet"></div>
          <div className="button-loader-bullet"></div>
          <div className="button-loader-bullet"></div>
@@ -53,6 +53,6 @@ const Button = (props) => {
       return listString
    }
 
-   return <button onClick={e => !(!!props.isloading) && props.onClick(e)} className={classLists()}> {props.isloading ? loadingLoader() : (props.label || 'Submit')}</button >
+   return <button onClick={e => !(!!props.isloading) && props.onClick(e)} className={classLists()}>{props.isloading ? loadingLoader() : (props.label || 'Submit')}</button >
 }
 export default Button
