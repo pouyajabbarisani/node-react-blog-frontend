@@ -39,5 +39,14 @@ describe("Input Tests", () => {
       expect(queryByText(sampleLabelForTest)).toBeTruthy()
    })
 
+   test("Check functionality of fullWidth property", () => {
+      const { container } = render(<Input fullWidth={true} />)
+      expect(container.firstChild.classList.contains('fullwidth-input-container')).toBe(true);
+   })
+
+   test("Check functionality of errorMessage property", () => {
+      const { queryByText } = render(<Input errorMessage={'test error message'} />)
+      expect(queryByText('test error message')).not.toBeNull() // it means error message exist, so test can find it.
+   })
 
 })
